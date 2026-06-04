@@ -1,0 +1,16 @@
+Setelah website aktif, kamu juga bisa membuat QR langsung ke kategori tertentu:
+
+Halaman utama:
+https://username.github.io
+
+Langsung ke UMKM:
+https://username.github.io/?kategori=umkm
+
+Langsung ke Fasilitas Umum:
+https://username.github.io/?kategori=fasum
+
+Langsung ke Jalur Evakuasi:
+https://username.github.io/?kategori=evakuasi
+
+Langsung ke Kontak Penting:
+https://username.github.io/?kategori=kontak
