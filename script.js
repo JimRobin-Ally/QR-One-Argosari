@@ -1,298 +1,243 @@
 (function () {
-  const config = window.PORTAL_CONFIG || {};
-  const site = config.site || {};
-  let allItems = [];
-  let activeCategory = "all";
-  let searchTerm = "";
+  const rupiahSafeText = (value) => String(value || "").trim();
 
-  const $ = (id) => document.getElementById(id);
+  const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  };
 
-  function setText(id, value) {
-    const el = $(id);
-    if (el && value !== undefined && value !== null) el.textContent = value;
-  }
+  const setSrc = (id, value) => {
+    const el = document.getElementById(id);
+    if (el && value) el.src = value;
+  };
 
-  function escapeHtml(value) {
-    return String(value ?? "").replace(/[&<>'"]/g, (char) => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      "'": "&#39;",
-      '"': "&quot;"
-    }[char]));
-  }
+  const normalize = (text) => rupiahSafeText(text).toLowerCase();
 
-  function setupSite() {
-    setText("brandText", site.brand || site.title || "QR-One");
-    setText("brandIcon", site.logo || "🌄");
-    setText("logoCard", site.logo || "🌄");
-    setText("eyebrow", site.eyebrow || "Portal Informasi Digital");
-    setText("siteTitle", site.title || "QR-One");
-    setText("siteSubtitle", site.subtitle || "Portal informasi digital");
-    setText("siteIntro", site.intro || "");
-    setText("noticeBox", site.notice || "");
-    setText("validationText", site.validationText || "");
-    setText("footerText", site.footer || site.title || "QR-One");
-    setText("lastUpdated", `Terakhir diperbarui: ${site.lastUpdated || "-"}`);
+  const getFormUrl = () => CONFIG.form && CONFIG.form.url ? CONFIG.form.url : "#daftar";
 
-    if (site.coverImage) {
-      const cover = $("cover");
-      cover.style.backgroundImage = `linear-gradient(180deg, rgba(0,0,0,0.06), rgba(247,244,236,0.92)), url("${site.coverImage}")`;
-    }
+  function bootSiteText() {
+    setText("navTitle", CONFIG.site.title);
+    setText("siteTitle", CONFIG.site.title);
+    setText("eyebrow", CONFIG.site.eyebrow);
+    setText("siteTagline", CONFIG.site.tagline);
+    setText("siteIntro", CONFIG.site.intro);
+    setText("siteNotice", CONFIG.site.notice);
+    setText("validationText", CONFIG.site.validationText);
+    setText("footerText", CONFIG.site.footer);
+    setText("lastUpdated", `Terakhir diperbarui: ${CONFIG.site.lastUpdated}`);
+    setText("formDescription", CONFIG.form.description);
 
-    const formButton = $("formButton");
+    const formButton = document.getElementById("formButton");
     if (formButton) {
-      if (site.formUrl && !site.formUrl.includes("GANTI_DENGAN")) {
-        formButton.href = site.formUrl;
-      } else {
-        formButton.href = "#";
-        formButton.addEventListener("click", (event) => {
-          event.preventDefault();
-          alert("Link Google Form belum diisi di file data.js");
-        });
-      }
+      formButton.href = getFormUrl();
+      formButton.textContent = CONFIG.form.buttonText || "Buka Form";
     }
+
+    setSrc("coverImage", CONFIG.assets.cover);
+    setSrc("mainLogo", CONFIG.assets.mainLogo);
+    setSrc("navLogo", CONFIG.assets.navLogo);
+    setSrc("kknLogo", CONFIG.assets.kknLogo);
+    setSrc("campusLogo", CONFIG.assets.campusLogo);
   }
 
-  function setupChips() {
-    const chips = $("categoryChips");
-    if (!chips) return;
-    const cats = [{ id: "all", title: "Semua" }, ...(config.categories || [])];
-    chips.innerHTML = cats.map(cat => `<button class="chip${cat.id === activeCategory ? " active" : ""}" data-category="${escapeHtml(cat.id)}">${escapeHtml(cat.title)}</button>`).join("");
-    chips.querySelectorAll("button").forEach(button => {
-      button.addEventListener("click", () => {
-        activeCategory = button.dataset.category;
-        setupChips();
-        render();
-      });
+  function renderQuickActions() {
+    const target = document.getElementById("quickActions");
+    if (!target) return;
+    target.innerHTML = "";
+    (CONFIG.quickActions || []).forEach((action) => {
+      const a = document.createElement("a");
+      a.className = "quick-action";
+      a.href = action.href || "#";
+      a.innerHTML = `<span>${action.icon || "🔗"}</span><strong>${action.label || "Tautan"}</strong>`;
+      target.appendChild(a);
     });
   }
 
-  function searchable(item) {
-    return [item.category, item.name, item.description, item.address, item.status, item.phone]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
-  }
+  function makeCard(item) {
+    const url = item.useFormUrl ? getFormUrl() : item.link;
+    const article = document.createElement("article");
+    article.className = "info-card";
+    article.dataset.search = normalize(`${item.title} ${item.description} ${item.status}`);
 
-  function getVisibleItems() {
-    return allItems.filter(item => {
-      const categoryMatch = activeCategory === "all" || item.category === activeCategory;
-      const searchMatch = !searchTerm || searchable(item).includes(searchTerm.toLowerCase());
-      return categoryMatch && searchMatch;
-    });
-  }
+    const title = rupiahSafeText(item.title);
+    const icon = item.icon || "📌";
+    const description = rupiahSafeText(item.description);
+    const status = rupiahSafeText(item.status);
+    const linkText = rupiahSafeText(item.linkText || "Buka Informasi");
+    const isRealLink = url && url !== "#";
 
-  function renderActions(item) {
-    const actions = [];
-    if (item.mapsUrl) actions.push(`<a class="action" href="${escapeHtml(item.mapsUrl)}" target="_blank" rel="noopener">🔗 Buka Maps</a>`);
-    if (item.externalUrl) actions.push(`<a class="action" href="${escapeHtml(item.externalUrl)}" target="_blank" rel="noopener">🔗 Buka Link</a>`);
-    if (item.phone) actions.push(`<a class="action" href="tel:${escapeHtml(item.phone)}">☎️ Telepon</a>`);
-    if (item.whatsapp) actions.push(`<a class="action" href="https://wa.me/${escapeHtml(item.whatsapp)}" target="_blank" rel="noopener">💬 WhatsApp</a>`);
-    return actions.length ? `<div class="actions">${actions.join("")}</div>` : "";
-  }
-
-  function renderCard(item, fallbackTone) {
-    const tone = item.tone || fallbackTone || "green";
-    return `
-      <article class="info-card" data-tone="${escapeHtml(tone)}">
-        <div class="card-heading">
-          <span class="icon-badge">${escapeHtml(item.icon || "📌")}</span>
-          <h3>${escapeHtml(item.name || "Tanpa judul")}</h3>
+    article.innerHTML = `
+      <div class="card-main">
+        <div class="card-icon" aria-hidden="true">${icon}</div>
+        <div>
+          <h3>${title}</h3>
+          <p>${description}</p>
+          ${status ? `<p class="status"><strong>Status:</strong> ${status}</p>` : ""}
         </div>
-        ${item.description ? `<p>${escapeHtml(item.description)}</p>` : ""}
-        ${item.address ? `<p class="meta">Lokasi: ${escapeHtml(item.address)}</p>` : ""}
-        ${item.status ? `<p class="meta">Status: ${escapeHtml(item.status)}</p>` : ""}
-        ${renderActions(item)}
-      </article>
+      </div>
+      ${isRealLink ? `<a class="card-link" href="${url}" target="_blank" rel="noopener">🔗 ${linkText}</a>` : `<span class="card-link muted">🔒 Link belum diisi</span>`}
     `;
-  }
 
-  function render() {
-    const root = $("portalSections");
-    if (!root) return;
-    const visible = getVisibleItems();
-    const categories = config.categories || [];
-
-    root.innerHTML = categories.map(cat => {
-      const items = visible.filter(item => item.category === cat.id);
-      if (!items.length && activeCategory !== cat.id) return "";
-      return `
-        <section class="portal-section${cat.wide ? " wide" : ""}" id="${escapeHtml(cat.id)}">
-          <div class="section-title">
-            <h2>${escapeHtml(cat.icon || "📌")} ${escapeHtml(cat.title)}</h2>
-            <span class="section-count">${items.length} data</span>
-          </div>
-          <div class="card-list">
-            ${items.length ? items.map(item => renderCard(item, cat.tone)).join("") : `<div class="empty">Belum ada data untuk kategori ini.</div>`}
-          </div>
-        </section>
-      `;
-    }).join("");
-
-    if (!root.innerHTML.trim()) {
-      root.innerHTML = `<div class="empty">Tidak ada data yang cocok dengan pencarian.</div>`;
-    }
-  }
-
-  function parseCsv(text) {
-    const rows = [];
-    let row = [];
-    let cell = "";
-    let inQuotes = false;
-
-    for (let i = 0; i < text.length; i++) {
-      const char = text[i];
-      const next = text[i + 1];
-      if (char === '"') {
-        if (inQuotes && next === '"') {
-          cell += '"';
-          i++;
-        } else {
-          inQuotes = !inQuotes;
-        }
-      } else if (char === "," && !inQuotes) {
-        row.push(cell);
-        cell = "";
-      } else if ((char === "\n" || char === "\r") && !inQuotes) {
-        if (char === "\r" && next === "\n") i++;
-        row.push(cell);
-        if (row.some(value => value.trim() !== "")) rows.push(row);
-        row = [];
-        cell = "";
-      } else {
-        cell += char;
-      }
-    }
-    row.push(cell);
-    if (row.some(value => value.trim() !== "")) rows.push(row);
-    return rows;
-  }
-
-  function normalizeHeader(header) {
-    return String(header || "")
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, "_")
-      .replace(/[()]/g, "");
-  }
-
-  function mapSheetRow(row) {
-    const get = (...names) => {
-      for (const name of names) {
-        const key = normalizeHeader(name);
-        if (row[key] !== undefined && String(row[key]).trim() !== "") return String(row[key]).trim();
-      }
-      return "";
-    };
-
-    const approved = get("status_tayang", "status tayang", "approved", "status", "verifikasi");
-    const isApproved = ["approved", "setuju", "disetujui", "ya", "yes", "tayang", "publish", "published"].includes(approved.toLowerCase());
-
-    if (!isApproved) return null;
-
-    const categoryRaw = get("kategori", "category", "jenis").toLowerCase();
-    const categoryMap = {
-      "umkm": "wisata-ekonomi",
-      "wisata": "wisata-ekonomi",
-      "ekonomi": "wisata-ekonomi",
-      "fasilitas umum": "fasum",
-      "fasum": "fasum",
-      "mitigasi": "mitigasi",
-      "jalur evakuasi": "mitigasi",
-      "kontak": "mitigasi",
-      "informasi": "informasi",
-      "pembaruan": "pembaruan"
-    };
-
-    return {
-      category: categoryMap[categoryRaw] || categoryRaw || "informasi",
-      name: get("nama", "judul", "nama usaha", "nama tempat", "name"),
-      icon: get("icon", "ikon") || "📌",
-      description: get("deskripsi", "keterangan", "description"),
-      address: get("alamat", "lokasi", "address"),
-      mapsUrl: get("mapsUrl", "maps_url", "google maps", "link maps", "link google maps", "maps"),
-      externalUrl: get("externalUrl", "external_url", "link", "website", "instagram"),
-      phone: get("phone", "telepon", "nomor telepon", "no hp", "nomor hp"),
-      whatsapp: get("whatsapp", "wa", "nomor whatsapp"),
-      status: get("catatan", "status", "status_tayang") || "Data dari formulir",
-      tone: get("tone", "warna") || "green"
-    };
-  }
-
-  async function loadSheetItems() {
-    const url = config.sheetCsvUrl;
-    const status = $("syncStatus");
-    if (!url) return [];
-
-    try {
-      if (status) {
-        status.hidden = false;
-        status.textContent = "Memuat data tambahan dari Google Sheet...";
-      }
-      const response = await fetch(url, { cache: "no-store" });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const csv = await response.text();
-      const rows = parseCsv(csv);
-      if (!rows.length) return [];
-      const headers = rows[0].map(normalizeHeader);
-      const records = rows.slice(1).map(values => {
-        const row = {};
-        headers.forEach((header, index) => row[header] = values[index] || "");
-        return row;
+    if (isRealLink) {
+      article.addEventListener("click", (event) => {
+        if (event.target.tagName.toLowerCase() === "a") return;
+        window.open(url, "_blank", "noopener");
       });
-      const sheetItems = records.map(mapSheetRow).filter(Boolean).filter(item => item.name);
-      if (status) {
-        status.textContent = `Berhasil memuat ${sheetItems.length} data yang sudah disetujui dari Google Sheet.`;
-        setTimeout(() => { status.hidden = true; }, 5000);
-      }
-      return sheetItems;
-    } catch (error) {
-      if (status) {
-        status.hidden = false;
-        status.textContent = "Data Google Sheet belum bisa dimuat. Website tetap memakai data manual.";
-      }
-      console.error(error);
-      return [];
+      article.classList.add("clickable");
     }
+
+    return article;
   }
 
-  async function init() {
-    setupSite();
-    setupChips();
+  function makeSection(section) {
+    const sectionEl = document.createElement("section");
+    sectionEl.className = "data-section";
+    sectionEl.id = section.id;
+    sectionEl.innerHTML = `<h2>${section.title}</h2>`;
 
-    const manualItems = Array.isArray(config.items) ? config.items : [];
-    const sheetItems = await loadSheetItems();
-    if (config.sheetCsvUrl && !config.combineManualAndSheet) {
-      allItems = sheetItems.length ? sheetItems : manualItems;
-    } else {
-      allItems = [...manualItems, ...sheetItems];
-    }
+    const grid = document.createElement("div");
+    grid.className = `cards-grid columns-${section.columns || 1}`;
 
+    (section.items || []).forEach((item) => grid.appendChild(makeCard(item)));
+    sectionEl.appendChild(grid);
+    return sectionEl;
+  }
+
+  function renderSections() {
+    const content = document.getElementById("content");
+    if (!content) return;
+    content.innerHTML = "";
+
+    const layout = document.createElement("div");
+    layout.className = "portal-layout";
+
+    const left = document.createElement("div");
+    left.className = "layout-column left-column";
+    const middle = document.createElement("div");
+    middle.className = "layout-column middle-column";
+    const right = document.createElement("div");
+    right.className = "layout-column right-column";
+
+    DATA_SECTIONS.forEach((section) => {
+      const sectionNode = makeSection(section);
+      if (["informasi", "umkm-wisata"].includes(section.id)) left.appendChild(sectionNode);
+      else if (["fasum", "pembaruan"].includes(section.id)) middle.appendChild(sectionNode);
+      else right.appendChild(sectionNode);
+    });
+
+    layout.appendChild(left);
+    layout.appendChild(middle);
+    layout.appendChild(right);
+    content.appendChild(layout);
+  }
+
+  function wireSearch() {
+    const input = document.getElementById("searchInput");
+    if (!input) return;
+    input.addEventListener("input", () => {
+      const query = normalize(input.value);
+      const cards = document.querySelectorAll(".info-card");
+      cards.forEach((card) => {
+        const match = !query || card.dataset.search.includes(query);
+        card.classList.toggle("hidden", !match);
+      });
+      document.querySelectorAll(".data-section").forEach((section) => {
+        const visible = section.querySelectorAll(".info-card:not(.hidden)").length > 0;
+        section.classList.toggle("hidden", !visible);
+      });
+    });
+  }
+
+  function scrollByUrlParam() {
     const params = new URLSearchParams(window.location.search);
-    const categoryFromUrl = params.get("kategori");
-    if (categoryFromUrl) {
-      const map = {
-        umkm: "wisata-ekonomi",
-        wisata: "wisata-ekonomi",
-        fasum: "fasum",
-        evakuasi: "mitigasi",
-        mitigasi: "mitigasi",
-        kontak: "mitigasi"
-      };
-      activeCategory = map[categoryFromUrl] || categoryFromUrl;
-      setupChips();
+    const kategori = params.get("kategori");
+    const aliases = {
+      umkm: "umkm-wisata",
+      wisata: "umkm-wisata",
+      fasum: "fasum",
+      evakuasi: "mitigasi",
+      mitigasi: "mitigasi",
+      daftar: "daftar"
+    };
+    if (kategori && aliases[kategori]) {
+      setTimeout(() => {
+        document.getElementById(aliases[kategori])?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300);
     }
-
-    const search = $("searchInput");
-    if (search) {
-      search.addEventListener("input", (event) => {
-        searchTerm = event.target.value.trim();
-        render();
-      });
-    }
-    render();
   }
 
-  init();
+  async function loadSheetRows() {
+    if (!CONFIG.googleSheetCsvUrl) return;
+    try {
+      const response = await fetch(CONFIG.googleSheetCsvUrl);
+      const csv = await response.text();
+      const rows = csvToObjects(csv);
+      const approved = rows.filter((row) => {
+        if (!CONFIG.showOnlyApprovedSheetRows) return true;
+        return normalize(row.status_tayang) === "disetujui";
+      });
+      if (!approved.length) return;
+
+      const sheetSection = {
+        id: "data-terbaru",
+        title: "Data Terbaru dari Form",
+        columns: 1,
+        items: approved.map((row) => ({
+          title: row.nama || row.name || "Data baru",
+          icon: row.icon || "📌",
+          description: row.deskripsi || row.description || row.kategori || "Data dari Google Form",
+          status: row.kategori ? `Kategori: ${row.kategori}` : "Disetujui admin",
+          linkText: "Buka Maps/Info",
+          link: row.link_google_maps || row.maps || row.link || "#"
+        }))
+      };
+      DATA_SECTIONS.push(sheetSection);
+      renderSections();
+      wireSearch();
+    } catch (error) {
+      console.warn("Gagal membaca Google Sheet CSV", error);
+    }
+  }
+
+  function csvToObjects(csv) {
+    const lines = csv.split(/\r?\n/).filter(Boolean);
+    if (!lines.length) return [];
+    const headers = splitCsvLine(lines.shift()).map((h) => normalize(h).replace(/\s+/g, "_"));
+    return lines.map((line) => {
+      const values = splitCsvLine(line);
+      const row = {};
+      headers.forEach((header, index) => { row[header] = values[index] || ""; });
+      return row;
+    });
+  }
+
+  function splitCsvLine(line) {
+    const output = [];
+    let current = "";
+    let quote = false;
+    for (let i = 0; i < line.length; i += 1) {
+      const char = line[i];
+      const next = line[i + 1];
+      if (char === '"' && quote && next === '"') {
+        current += '"';
+        i += 1;
+      } else if (char === '"') {
+        quote = !quote;
+      } else if (char === "," && !quote) {
+        output.push(current);
+        current = "";
+      } else {
+        current += char;
+      }
+    }
+    output.push(current);
+    return output.map((v) => v.trim());
+  }
+
+  bootSiteText();
+  renderQuickActions();
+  renderSections();
+  wireSearch();
+  scrollByUrlParam();
+  loadSheetRows();
 })();
