@@ -20,9 +20,9 @@ const CONFIG = {
 
   assets: {
     cover: "assets/cover.svg",
-    mainLogo: "assets/logo-desa.svg",
+    mainLogo: "assets/Logo KKN.png",
     navLogo: "assets/logo-desa.svg",
-    kknLogo: "assets/logo-kkn.svg",
+    kknLogo: "Logo KKN.png",
     campusLogo: "assets/logo-kampus.svg"
   },
 
