@@ -23,7 +23,7 @@ const CONFIG = {
     mainLogo: "assets/Logo KKN.png",
     navLogo: "assets/logo-desa.svg",
     kknLogo: "assets/Logo KKN.png",
-    campusLogo: "assets/logo-kampus.svg"
+    campusLogo: "assets/Lambang-UGM"
   },
 
   // Satu form saja untuk semua jenis pendaftaran/pembaruan data.
