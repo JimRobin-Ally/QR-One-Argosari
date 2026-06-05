@@ -23,7 +23,6 @@ const CONFIG = {
     mainLogo: "assets/Logo KKN.png",
     navLogo: "assets/logo-desa.svg",
     kknLogo: "assets/Logo KKN.png",
-    navLogo: "assets/logo-desa.svg",
     campusLogo: "assets/logo-kampus.svg"
   },
 
@@ -67,7 +66,7 @@ const DATA_SECTIONS = [
         title: "Profil Desa Argosari",
         icon: "🏡",
         description: "Informasi dan Layanan Desa.",
-        status: "Diisi Setelah Observasi Lapangan,
+        status: "Diisi Setelah Observasi Lapangan",
         linkText: "Lihat Profil",
         link: "#"
       }
