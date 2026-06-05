@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Logo kampus">
+  <rect width="200" height="200" rx="40" fill="#eef7ff"/>
+  <path d="M30 74 100 36l70 38-70 38z" fill="#2362a8"/>
+  <path d="M58 98v34c0 18 84 18 84 0V98l-42 22z" fill="#1d7c4d"/>
+  <path d="M164 80v48" stroke="#2362a8" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="164" cy="141" r="10" fill="#f6c64b"/>
+</svg>

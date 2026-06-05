@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 420" role="img" aria-label="Ilustrasi pegunungan Argosari">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#c9dfef"/>
+      <stop offset="0.55" stop-color="#f7e9bf"/>
+      <stop offset="1" stop-color="#f8b75a"/>
+    </linearGradient>
+    <linearGradient id="m1" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#244735"/>
+      <stop offset="1" stop-color="#5a7c4f"/>
+    </linearGradient>
+    <linearGradient id="m2" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#31543c"/>
+      <stop offset="1" stop-color="#8aa05f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="420" fill="url(#sky)"/>
+  <circle cx="1375" cy="104" r="54" fill="#fff0a8" opacity=".95"/>
+  <path d="M0 300 C145 210 224 130 352 210 C500 60 648 150 760 240 C885 132 1044 122 1210 230 C1360 143 1474 183 1600 98 L1600 420 L0 420 Z" fill="url(#m1)"/>
+  <path d="M0 344 C210 240 338 270 500 320 C700 210 858 230 995 318 C1154 244 1300 252 1600 205 L1600 420 L0 420 Z" fill="url(#m2)" opacity=".92"/>
+  <path d="M0 330 C200 315 310 315 452 333 C650 357 772 300 945 326 C1130 354 1264 315 1600 304 L1600 420 L0 420 Z" fill="#ffffff" opacity=".5"/>
+  <path d="M0 382 C225 330 407 356 560 378 C807 414 937 340 1170 364 C1338 381 1454 365 1600 346 L1600 420 L0 420 Z" fill="#d8edd2" opacity=".9"/>
+</svg>
