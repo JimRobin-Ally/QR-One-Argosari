@@ -22,7 +22,8 @@ const CONFIG = {
     cover: "assets/cover.svg",
     mainLogo: "assets/Logo KKN.png",
     navLogo: "assets/logo-desa.svg",
-    kknLogo: "Logo KKN.png",
+    kknLogo: "assets/Logo KKN.png",
+    navLogo: "assets/logo-desa.svg",
     campusLogo: "assets/logo-kampus.svg"
   },
 
