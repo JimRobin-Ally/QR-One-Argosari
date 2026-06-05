@@ -1,117 +1,135 @@
-/*
-  CARA EDIT DATA:
-  1. Ganti teks di bagian site.
-  2. Ganti/tambah kategori di bagian categories.
-  3. Ganti/tambah daftar informasi di bagian items.
-  4. Untuk Google Maps, buka lokasi di Google Maps, klik Bagikan, lalu salin linknya.
-*/
+// =============================================================
+// DATA QR-ONE ARGOSARI
+// Edit file ini untuk mengubah isi website.
+// =============================================================
 
-const PORTAL_DATA = {
+window.PORTAL_CONFIG = {
   site: {
-    title: "Desa/Kelurahan Anda",
-    subtitle: "Portal cepat untuk UMKM, fasilitas umum, jalur evakuasi, dan kontak penting.",
-    notice: "Contoh template. Silakan ganti data sesuai wilayahmu sebelum dipublikasikan.",
-    lastUpdated: "4 Juni 2026"
+    brand: "QR-One Argosari",
+    logo: "🌄",
+    eyebrow: "Portal Informasi Digital",
+    title: "QR-One Argosari",
+    subtitle: "Sistem Integrasi Informasi dan Pemetaan Desa Berbasis QR Code",
+    intro: "Selamat datang di pusat informasi digital Desa Argosari, Kecamatan Senduro, Kabupaten Lumajang. Halaman ini digunakan untuk mengakses peta desa, fasilitas umum, wisata, UMKM, jalur evakuasi, nomor darurat, dan informasi penting lainnya.",
+    notice: "📍 Satu akses untuk informasi desa, wisata, dan mitigasi Argosari.",
+    validationText: "Informasi dalam QR-One Argosari akan diperbarui berdasarkan hasil observasi lapangan, pendataan, serta verifikasi bersama perangkat desa dan pihak terkait.",
+    footer: "© QR-One Argosari",
+    lastUpdated: "16 Mei 2026",
+    formUrl: "https://forms.gle/GANTI_DENGAN_LINK_GOOGLE_FORM",
+
+    // Opsional: ganti dengan URL gambar cover sendiri.
+    // Bisa pakai foto yang di-upload ke GitHub repo, misalnya: "assets/cover.jpg"
+    coverImage: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80"
   },
 
+  // OPSI SINKRON GOOGLE FORM/SHEET
+  // 1. Buat Google Form.
+  // 2. Hubungkan Form ke Google Sheet.
+  // 3. Di Google Sheet: File > Share > Publish to web > pilih sheet > format CSV.
+  // 4. Paste link CSV ke sheetCsvUrl di bawah ini.
+  // 5. Biarkan kosong "" jika ingin memakai data manual di bawah.
+  sheetCsvUrl: "",
+
+  // Jika true: data manual di bawah tetap tampil, lalu data dari Google Sheet ditambahkan.
+  // Jika false: ketika sheetCsvUrl aktif, website hanya memakai data dari Google Sheet.
+  combineManualAndSheet: true,
+
   categories: [
-    {
-      id: "umkm",
-      title: "UMKM",
-      icon: "🛍️",
-      description: "Produk, kuliner, dan jasa warga."
-    },
-    {
-      id: "fasum",
-      title: "Fasilitas Umum",
-      icon: "🏥",
-      description: "Kantor, sekolah, puskesmas, dan lainnya."
-    },
-    {
-      id: "evakuasi",
-      title: "Jalur Evakuasi",
-      icon: "🧭",
-      description: "Rute dan titik kumpul darurat."
-    },
-    {
-      id: "kontak",
-      title: "Kontak Penting",
-      icon: "☎️",
-      description: "Nomor darurat dan layanan warga."
-    }
+    { id: "informasi", title: "Informasi Utama", icon: "🗺️", tone: "blue", wide: false },
+    { id: "fasum", title: "Fasilitas Umum", icon: "🏥", tone: "green", wide: false },
+    { id: "mitigasi", title: "Mitigasi dan Keselamatan", icon: "⚠️", tone: "yellow", wide: false },
+    { id: "wisata-ekonomi", title: "Wisata dan Ekonomi Desa", icon: "🛍️", tone: "purple", wide: false },
+    { id: "pembaruan", title: "Pembaruan Data", icon: "📝", tone: "blue", wide: false }
   ],
 
   items: [
     {
-      category: "umkm",
-      name: "Warung Kopi Bu Sari",
-      icon: "☕",
-      description: "Kopi, gorengan, dan makanan ringan.",
-      address: "Jl. Contoh No. 1",
-      mapsUrl: "https://maps.google.com/",
-      phone: "081234567890",
-      whatsapp: "6281234567890"
-    },
-    {
-      category: "umkm",
-      name: "Keripik Singkong Pak Budi",
-      icon: "🍠",
-      description: "Keripik singkong aneka rasa, cocok untuk oleh-oleh.",
-      address: "RT 02/RW 03",
-      mapsUrl: "https://maps.google.com/",
-      phone: "081298765432",
-      whatsapp: "6281298765432"
+      category: "informasi",
+      name: "Peta Desa Argosari",
+      icon: "🗺️",
+      description: "Akses lokasi Desa Argosari melalui Google Maps.",
+      address: "Desa Argosari, Kecamatan Senduro, Kabupaten Lumajang",
+      mapsUrl: "https://maps.google.com/?q=Desa+Argosari+Senduro+Lumajang",
+      status: "Siap digunakan",
+      tone: "blue"
     },
     {
       category: "fasum",
-      name: "Kantor Desa/Kelurahan",
-      icon: "🏛️",
-      description: "Layanan administrasi warga.",
-      address: "Jl. Kantor Desa No. 10",
-      mapsUrl: "https://maps.google.com/",
-      phone: "0211234567"
-    },
-    {
-      category: "fasum",
-      name: "Puskesmas Pembantu",
+      name: "Peta Fasilitas Umum",
       icon: "🏥",
-      description: "Layanan kesehatan dasar masyarakat.",
-      address: "Dekat balai warga",
-      mapsUrl: "https://maps.google.com/",
-      phone: "0217654321"
+      description: "Balai desa, sekolah, posyandu, masjid, toilet umum, titik parkir, dan fasilitas lainnya.",
+      address: "Desa Argosari",
+      mapsUrl: "https://maps.google.com/?q=Argosari+Senduro+Lumajang",
+      status: "Siap diisi setelah observasi lapangan",
+      tone: "green"
     },
     {
-      category: "evakuasi",
-      name: "Titik Kumpul Lapangan Utama",
-      icon: "📍",
-      description: "Titik kumpul saat keadaan darurat. Ikuti arahan petugas setempat.",
-      address: "Lapangan utama desa/kelurahan",
-      mapsUrl: "https://maps.google.com/"
+      category: "mitigasi",
+      name: "Peta Daerah Rawan Bencana",
+      icon: "⚠️",
+      description: "Informasi wilayah rawan bencana di Desa Argosari.",
+      address: "Desa Argosari",
+      mapsUrl: "https://maps.google.com/?q=Argosari+Senduro+Lumajang",
+      status: "Perlu validasi bersama pihak berwenang",
+      tone: "yellow"
     },
     {
-      category: "evakuasi",
-      name: "Rute Evakuasi ke Balai Warga",
-      icon: "➡️",
-      description: "Rute aman sementara menuju balai warga. Sesuaikan dengan peta resmi setempat.",
-      address: "Rute dari permukiman ke balai warga",
-      mapsUrl: "https://maps.google.com/"
+      category: "mitigasi",
+      name: "Jalur Evakuasi dan Titik Kumpul",
+      icon: "🚶",
+      description: "Rute evakuasi dan lokasi titik kumpul terdekat.",
+      address: "Desa Argosari",
+      mapsUrl: "https://maps.google.com/?q=Argosari+Senduro+Lumajang",
+      status: "Perlu validasi bersama perangkat desa/BPBD",
+      tone: "yellow"
     },
     {
-      category: "kontak",
-      name: "Ketua RT/RW",
+      category: "mitigasi",
+      name: "Nomor Darurat",
+      icon: "📞",
+      description: "Daftar kontak penting untuk keadaan darurat.",
+      phone: "112",
+      status: "Perlu disesuaikan dengan kontak lokal",
+      tone: "yellow"
+    },
+    {
+      category: "wisata-ekonomi",
+      name: "Wisata B29",
+      icon: "🌄",
+      description: "Informasi daya tarik wisata B29 Argosari.",
+      address: "B29, Argosari, Senduro, Lumajang",
+      mapsUrl: "https://maps.google.com/?q=B29+Argosari+Lumajang",
+      status: "Siap diisi setelah observasi lapangan",
+      tone: "purple"
+    },
+    {
+      category: "wisata-ekonomi",
+      name: "Peta UMKM Lokal",
+      icon: "🛍️",
+      description: "Lokasi dan informasi UMKM di Desa Argosari.",
+      address: "Desa Argosari",
+      mapsUrl: "https://maps.google.com/?q=Argosari+Senduro+Lumajang",
+      status: "Siap diisi setelah pendataan UMKM",
+      tone: "purple"
+    },
+    {
+      category: "pembaruan",
+      name: "Form Update Data",
+      icon: "📝",
+      description: "Sampaikan data terbaru untuk pembaruan informasi.",
+      externalUrl: "https://forms.gle/GANTI_DENGAN_LINK_GOOGLE_FORM",
+      status: "Hubungkan dengan Google Form",
+      tone: "blue"
+    },
+    {
+      category: "pembaruan",
+      name: "Kontak Admin QR-One",
       icon: "👤",
-      description: "Kontak koordinator lingkungan.",
-      address: "Wilayah setempat",
-      phone: "081111111111",
-      whatsapp: "6281111111111"
-    },
-    {
-      category: "kontak",
-      name: "Nomor Darurat Lokal",
-      icon: "🚨",
-      description: "Gunakan hanya untuk keadaan darurat.",
-      address: "-",
-      phone: "112"
+      description: "Untuk informasi, saran, atau kerja sama.",
+      phone: "081234567890",
+      whatsapp: "6281234567890",
+      status: "Ganti dengan nomor admin",
+      tone: "blue"
     }
   ]
 };

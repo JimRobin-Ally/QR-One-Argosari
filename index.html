@@ -1,48 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal Informasi Desa/Kelurahan</title>
-  <meta name="description" content="Portal informasi UMKM, fasilitas umum, jalur evakuasi, dan kontak penting." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QR-One Argosari</title>
+  <meta name="description" content="Portal informasi digital desa berbasis QR Code" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="page-bg"></div>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Beranda">
+      <span class="brand-icon" id="brandIcon">🌄</span>
+      <span id="brandText">QR-One Argosari</span>
+    </a>
+    <nav class="topnav" aria-label="Navigasi utama">
+      <a href="#informasi">Informasi</a>
+      <a href="#wisata-ekonomi">UMKM/Wisata</a>
+      <a href="#mitigasi">Mitigasi</a>
+      <a href="#daftar">Daftar</a>
+    </nav>
+  </header>
 
-  <main class="app-shell">
-    <header class="hero">
-      <p class="eyebrow">Portal Informasi Digital</p>
-      <img src="assets/logo-placeholder.svg" alt="Logo" class="logo" />
-      <h1 id="site-title">Desa/Kelurahan Anda</h1>
-      <p id="site-subtitle" class="subtitle">Pilih informasi yang ingin kamu lihat.</p>
-    </header>
-
-    <section class="notice" id="notice-box" hidden></section>
-
-    <section class="search-panel">
-      <label for="search-input">Cari informasi</label>
-      <input id="search-input" type="search" placeholder="Contoh: warung, puskesmas, evakuasi..." autocomplete="off" />
-    </section>
-
-    <nav id="category-grid" class="category-grid" aria-label="Daftar kategori"></nav>
-
-    <section class="content-panel">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Daftar informasi</p>
-          <h2 id="active-category-title">Semua Informasi</h2>
-        </div>
-        <button id="show-all-button" class="ghost-button" type="button">Tampilkan semua</button>
+  <main>
+    <section class="hero">
+      <div class="cover" id="cover"></div>
+      <div class="hero-content container">
+        <div class="logo-card" id="logoCard" aria-hidden="true">🌄</div>
+        <p class="eyebrow" id="eyebrow">Portal Informasi Digital</p>
+        <h1 id="siteTitle">QR-One Argosari</h1>
+        <p class="subtitle" id="siteSubtitle">Sistem Integrasi Informasi dan Pemetaan Desa Berbasis QR Code</p>
+        <p class="intro" id="siteIntro">Selamat datang di pusat informasi digital desa.</p>
+        <div class="notice" id="noticeBox">📍 Satu akses untuk informasi desa, wisata, dan mitigasi.</div>
       </div>
-      <div id="items-list" class="items-list"></div>
-      <p id="empty-state" class="empty-state" hidden>Tidak ada data yang cocok. Coba kata kunci lain.</p>
     </section>
 
-    <footer class="footer">
-      <p id="footer-text">Dikelola oleh Pemerintah Desa/Kelurahan. Terakhir diperbarui: -</p>
-    </footer>
+    <section class="container search-panel" aria-label="Pencarian informasi">
+      <label for="searchInput">Cari informasi</label>
+      <input id="searchInput" type="search" placeholder="Contoh: UMKM, puskesmas, wisata, evakuasi..." autocomplete="off" />
+      <div class="chips" id="categoryChips"></div>
+    </section>
+
+    <section class="container status-panel" id="syncStatus" hidden></section>
+
+    <section class="container layout" id="portalSections" aria-live="polite"></section>
+
+    <section class="container register-panel" id="daftar">
+      <div>
+        <p class="section-kicker">Pembaruan data</p>
+        <h2>Daftarkan UMKM, wisata, atau fasilitas baru</h2>
+        <p>Gunakan tombol ini untuk membuka Google Form. Data dapat muncul otomatis jika sudah disetujui admin melalui Google Sheet.</p>
+      </div>
+      <a class="primary-button" id="formButton" href="#" target="_blank" rel="noopener">Buka Form Pendaftaran</a>
+    </section>
+
+    <section class="container validation-note">
+      <strong>Catatan validasi data</strong>
+      <p id="validationText">Informasi diperbarui berdasarkan observasi lapangan, pendataan, dan verifikasi bersama pihak terkait.</p>
+    </section>
   </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p id="footerText">© QR-One Argosari</p>
+      <p id="lastUpdated">Terakhir diperbarui: -</p>
+    </div>
+  </footer>
 
   <script src="data.js"></script>
   <script src="script.js"></script>
