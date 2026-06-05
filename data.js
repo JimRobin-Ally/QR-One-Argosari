@@ -58,16 +58,16 @@ const DATA_SECTIONS = [
       {
         title: "Peta Desa Argosari",
         icon: "🗺️",
-        description: "Akses lokasi Desa Argosari melalui Google Maps.",
+        description: "Lokasi Desa Argosari",
         status: "Aktif",
-        linkText: "Buka Peta Desa Argosari",
+        linkText: "Peta Desa Argosari",
         link: "https://maps.google.com/"
       },
       {
         title: "Profil Desa Argosari",
         icon: "🏡",
-        description: "Ringkasan informasi wilayah, potensi, dan layanan desa.",
-        status: "Siap diperbarui",
+        description: "Informasi dan Layanan Desa.",
+        status: "Diisi Setelah Observasi Lapangan,
         linkText: "Lihat Profil",
         link: "#"
       }
@@ -82,7 +82,7 @@ const DATA_SECTIONS = [
         title: "Peta Fasilitas Umum",
         icon: "🏥",
         description: "Balai desa, sekolah, posyandu, masjid, toilet umum, titik parkir, dan fasilitas lainnya.",
-        status: "Siap diisi setelah observasi lapangan",
+        status: "Diisi setelah observasi lapangan",
         linkText: "Lihat Lokasi",
         link: "https://maps.google.com/"
       }
@@ -97,7 +97,7 @@ const DATA_SECTIONS = [
         title: "Peta Daerah Rawan Bencana",
         icon: "⚠️",
         description: "Informasi wilayah rawan bencana di Desa Argosari.",
-        status: "Perlu validasi pihak terkait",
+        status: "Diisi Setelah Observasi Lapangan",
         linkText: "Lihat Peta",
         link: "#"
       },
@@ -105,7 +105,7 @@ const DATA_SECTIONS = [
         title: "Jalur Evakuasi dan Titik Kumpul",
         icon: "🚶",
         description: "Rute evakuasi dan lokasi titik kumpul terdekat.",
-        status: "Perlu validasi BPBD/perangkat desa",
+        status: "Perlu validasi BPBD/perangkat desa dan observasi lapangan",
         linkText: "Buka Rute",
         link: "#"
       },
@@ -113,7 +113,7 @@ const DATA_SECTIONS = [
         title: "Nomor Darurat",
         icon: "📞",
         description: "Daftar kontak penting untuk keadaan darurat.",
-        status: "Siap diperbarui",
+        status: "Diisi Setelah Observasi Lapangan",
         linkText: "Hubungi",
         link: "tel:112"
       }
@@ -159,7 +159,7 @@ const DATA_SECTIONS = [
         title: "Kontak Admin QR-One",
         icon: "👤",
         description: "Untuk informasi, saran, atau kerja sama.",
-        status: "Isi nomor admin di data.js",
+        status: "Perlu diisi oleh perangkat desa atau pihak terkait",
         linkText: "Hubungi Admin",
         link: "https://wa.me/6281234567890"
       }
