@@ -556,3 +556,142 @@ h1 {
   height: 42px;
   max-width: 110px;
 }
+
+/* ==============================
+   PERBAIKAN TAMPILAN HP QR-ONE
+   ============================== */
+
+@media (max-width: 680px) {
+  .page-width {
+    width: min(100% - 28px, 1200px);
+  }
+
+  .topbar {
+    padding: 10px 14px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .brand img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .navlinks {
+    width: 100%;
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .navlinks a {
+    font-size: 15px;
+    padding: 6px 4px;
+  }
+
+  .cover {
+    height: 155px;
+  }
+
+  .hero {
+    margin-top: -34px;
+    padding-bottom: 22px;
+  }
+
+  .logo-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .main-logo {
+    width: 74px;
+    height: 74px;
+    border-radius: 18px;
+    border: 4px solid white;
+    flex: 0 0 auto;
+  }
+
+  .side-logos {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+    flex-wrap: nowrap;
+  }
+
+  .side-logo-box {
+    width: 68px;
+    height: 52px;
+    min-width: 68px;
+    padding: 6px 10px;
+    justify-content: center;
+    border-radius: 999px;
+  }
+
+  .side-logo-box span {
+    display: none;
+  }
+
+  .side-logo-box img {
+    width: auto;
+    height: 34px;
+    max-width: 48px;
+    object-fit: contain;
+  }
+
+  .eyebrow {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+  }
+
+  h1 {
+    font-size: clamp(36px, 11vw, 44px);
+    line-height: 1.04;
+    letter-spacing: -0.045em;
+  }
+
+  .tagline {
+    margin-top: 12px;
+    font-size: 18px;
+    line-height: 1.45;
+  }
+
+  .intro {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .notice {
+    margin: 18px 0;
+    padding: 13px 15px;
+    border-radius: 16px;
+    font-size: 15px;
+  }
+
+  .search-card {
+    padding: 15px;
+    border-radius: 20px;
+  }
+
+  .quick-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cards-grid.columns-2 {
+    grid-template-columns: 1fr;
+  }
+}
