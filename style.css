@@ -540,3 +540,19 @@ h1 {
     flex-direction: column;
   }
 }
+
+.side-logo-box span {
+  display: none;
+}
+
+.side-logo-box {
+  justify-content: center;
+  padding: 10px 18px;
+  min-width: 96px;
+}
+
+.side-logo-box img {
+  width: auto;
+  height: 42px;
+  max-width: 110px;
+}
